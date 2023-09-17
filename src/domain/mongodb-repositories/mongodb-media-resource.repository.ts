@@ -17,7 +17,7 @@ export class MongoDBMediaResourceRepository implements MediaResourceRepository {
     return media;
   }
 
-  async insertAndGet(media: MediaResource): Promise<MediaResource> {
+  async create(media: MediaResource): Promise<MediaResource> {
     if (!media.id) media.id = generateTimestampId();
 
     const mediaDoc = new this.mediaModel(media);
@@ -26,10 +26,10 @@ export class MongoDBMediaResourceRepository implements MediaResourceRepository {
   }
 
   async save(media: MediaResource): Promise<MediaResource> {
-    if (!media.id) return this.insertAndGet(media);
+    if (!media.id) return this.create(media);
 
     const previous = await this.mediaModel.findOne({ id: media.id }).exec();
-    if (!previous) return this.insertAndGet(media);
+    if (!previous) return this.create(media);
 
     Object.assign(previous, media);
     if (!previous.isNew && !previous.isModified()) return this.convert(previous);

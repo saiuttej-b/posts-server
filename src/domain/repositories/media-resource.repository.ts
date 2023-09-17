@@ -3,7 +3,7 @@ import { MediaResource } from '../schemas/media-resource.schema';
 export abstract class MediaResourceRepository {
   abstract instance(data?: Partial<MediaResource>): MediaResource;
 
-  abstract insertAndGet(media: MediaResource): Promise<MediaResource>;
+  abstract create(media: MediaResource): Promise<MediaResource>;
 
   abstract save(media: MediaResource): Promise<MediaResource>;
 

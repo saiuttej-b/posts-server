@@ -7,8 +7,7 @@ export type PostDocument = HydratedDocument<Post>;
 
 export const PostContentTypes = {
   TEXT: 'text',
-  IMAGES: 'images',
-  VIDEOS: 'videos',
+  RESOURCES: 'resources',
 };
 
 @Schema({ _id: false })
@@ -23,10 +22,7 @@ export class PostContent {
   text: string;
 
   @Prop({ type: [MediaResourceSubSchema] })
-  images: MediaResource[];
-
-  @Prop({ type: [MediaResourceSubSchema] })
-  videos: MediaResource[];
+  resources: MediaResource[];
 }
 const PostContentSchema = SchemaFactory.createForClass(PostContent);
 
@@ -42,7 +38,7 @@ export class Post {
   shortDescription: string;
 
   @Prop({ type: MediaResourceSubSchema })
-  image: MediaResource;
+  resource: MediaResource;
 
   @Prop({ required: true, type: [PostContentSchema] })
   content: PostContent[];
