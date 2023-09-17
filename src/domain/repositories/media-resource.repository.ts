@@ -27,4 +27,10 @@ export abstract class MediaResourceRepository {
     subtype: string;
     keys: string[];
   }): Promise<MediaResource[]>;
+
+  abstract findToBeDeleted(props: {
+    type: string;
+    subtypes?: string[];
+    typesIds?: string[];
+  }): Promise<string[]>;
 }

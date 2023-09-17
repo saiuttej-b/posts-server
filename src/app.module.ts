@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DomainModule } from './domain/domain.module';
 import { MediaResourcesModule } from './media-resources/media-resources.module';
+import { PostsModule } from './posts/posts.module';
 import { ENV, Environments } from './utils/config.constants';
 import { mongoConfig } from './utils/mongoose.config';
 
@@ -35,6 +36,7 @@ import { mongoConfig } from './utils/mongoose.config';
     }),
     DomainModule,
     MediaResourcesModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

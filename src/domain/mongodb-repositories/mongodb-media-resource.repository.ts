@@ -96,6 +96,27 @@ export class MongoDBMediaResourceRepository implements MediaResourceRepository {
     return this.convert(media);
   }
 
+  async findToBeDeleted(props: {
+    type: string;
+    subtypes?: string[];
+    typesIds?: string[];
+  }): Promise<string[]> {
+    if (props.subtypes && !props.subtypes.length) return [];
+    if (props.typesIds && !props.typesIds.length) return [];
+
+    const records = await this.mediaModel
+      .find(
+        {
+          type: props.type,
+          ...(props.subtypes && { subtype: { $in: props.subtypes } }),
+          ...(props.typesIds && { typeId: { $in: props.typesIds } }),
+        },
+        { _id: 0, key: 1 },
+      )
+      .exec();
+    return records.map((x) => x.key);
+  }
+
   private convert(data: MediaResourceDocument): MediaResource;
   private convert(data: MediaResourceDocument[]): MediaResource[];
   private convert(data: MediaResourceDocument | MediaResourceDocument[]) {

@@ -7,5 +7,11 @@ export abstract class PostRepository {
 
   abstract create(post: Post): Promise<Post>;
 
+  abstract save(post: Post): Promise<Post>;
+
+  abstract deleteById(id: string): Promise<void>;
+
+  abstract findById(id: string): Promise<Post>;
+
   abstract find(): Promise<Post[]>;
 }

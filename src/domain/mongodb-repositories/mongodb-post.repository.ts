@@ -36,6 +36,28 @@ export class MongoDBPostRepository implements PostRepository {
     return this.convert(record);
   }
 
+  async save(post: Post): Promise<Post> {
+    if (!post.id) return this.create(post);
+
+    const previous = await this.postModel.findOne({ id: post.id }).exec();
+    if (!previous) return this.create(post);
+
+    Object.assign(previous, post);
+    if (!previous.isModified()) return post;
+
+    const record = await previous.save();
+    return this.convert(record);
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.postModel.deleteOne({ id }).exec();
+  }
+
+  async findById(id: string): Promise<Post> {
+    const record = await this.postModel.findOne({ id }).exec();
+    return this.convert(record);
+  }
+
   async find(): Promise<Post[]> {
     const records = await this.postModel.find().sort({ id: -1 }).exec();
     return this.convert(records);

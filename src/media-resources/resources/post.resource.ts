@@ -59,6 +59,15 @@ export class PostResource {
     });
   }
 
+  async delete(typeId: string) {
+    const keys = await this.mediaRepo.findToBeDeleted({
+      type: type,
+      typesIds: [typeId],
+    });
+
+    await this.manager.deleteFiles(keys);
+  }
+
   async validateCoverFile(props: { key: string; typeId: string }) {
     if (!props.key) return;
 
