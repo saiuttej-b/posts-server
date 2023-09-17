@@ -41,7 +41,7 @@ export class MongoDBMediaResourceRepository implements MediaResourceRepository {
   async updateTypeId(keys: string[], typeId: string): Promise<void> {
     if (!keys.length) return;
 
-    await this.mediaModel.updateOne({ key: { $in: keys } }, { typeId }).exec();
+    await this.mediaModel.updateMany({ key: { $in: keys } }, { typeId }).exec();
   }
 
   async deleteByKeys(keys: string[]): Promise<void> {
