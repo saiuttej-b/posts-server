@@ -47,7 +47,7 @@ export class MediaResource {
 }
 
 export const MediaResourceSchema = SchemaFactory.createForClass(MediaResource);
-MediaResourceSchema.index({ id: 1 }, { unique: true });
+MediaResourceSchema.index({ id: -1 }, { unique: true });
 MediaResourceSchema.index({ key: 1 }, { unique: true });
 MediaResourceSchema.index({ type: 1, subtype: 1, typeId: 1 });
 
