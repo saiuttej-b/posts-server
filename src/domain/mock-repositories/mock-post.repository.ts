@@ -4,7 +4,7 @@ import { Post, PostContent } from '../schemas/post.schema';
 
 export const mockPost = (): Post => {
   const post = new Post();
-  post.id = generateTimestampId();
+  post.id = 'id';
   return post;
 };
 
