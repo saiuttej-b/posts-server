@@ -31,7 +31,7 @@ export class MediaResource {
   @Prop()
   mimeType: string;
 
-  @Prop()
+  @Prop({ type: MongooseSchema.Types.BigInt, get: (v: any) => (v != null ? Number(v) : null) })
   fileSize: number;
 
   @Prop({ type: MongooseSchema.Types.Mixed, select: false })
@@ -57,6 +57,7 @@ MediaResourceSchema.virtual('url').get(function () {
 
 export const MediaResourceSubSchema = SchemaFactory.createForClass(MediaResource);
 MediaResourceSubSchema.set('_id', false);
+
 MediaResourceSubSchema.virtual('url').get(function () {
   return `${process.env.AWS_S3_BUCKET_BASE_URL}/${this.key}`;
 });

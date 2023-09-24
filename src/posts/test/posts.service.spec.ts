@@ -320,10 +320,10 @@ describe('PostsService', () => {
     const previousPost = mockPost();
 
     describe('when posts are found', () => {
-      let result: { posts: Post[] };
+      let result: { posts: Post[]; count: number };
       beforeEach(async () => {
-        jest.spyOn(postRepo, 'find').mockResolvedValue([previousPost]);
-        result = await postsService.getPosts();
+        jest.spyOn(postRepo, 'find').mockResolvedValue({ count: 1, posts: [previousPost] });
+        result = await postsService.getPosts({});
       });
 
       it('should call postRepo.find', () => {
@@ -331,8 +331,9 @@ describe('PostsService', () => {
       });
 
       it('should return the posts', async () => {
-        expect(result).toEqual({
+        expect(result).toMatchObject({
           posts: [previousPost],
+          count: 1,
         });
       });
     });

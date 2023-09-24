@@ -4,8 +4,10 @@ import {
   IsArray,
   IsIn,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
+  Min,
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
@@ -47,4 +49,20 @@ export class PostCreateDto {
   @ValidateNested({ each: true })
   @Type(() => PostContentDto)
   content: PostContentDto[];
+}
+
+export class GetPostsDto {
+  @IsOptional()
+  @IsString()
+  search?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  limit?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  offset?: number;
 }

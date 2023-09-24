@@ -55,3 +55,4 @@ export class Post {
 
 export const PostSchema = SchemaFactory.createForClass(Post);
 PostSchema.index({ id: -1 }, { unique: true });
+PostSchema.index({ title: 'text', shortDescription: 'text' });

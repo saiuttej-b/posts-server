@@ -1,5 +1,11 @@
 import { Post, PostContent } from '../schemas/post.schema';
 
+export type FindPostsProps = {
+  search?: string;
+  limit?: number;
+  skip?: number;
+};
+
 export abstract class PostRepository {
   abstract instance(data?: Partial<Post>): Post;
 
@@ -13,5 +19,8 @@ export abstract class PostRepository {
 
   abstract findById(id: string): Promise<Post>;
 
-  abstract find(): Promise<Post[]>;
+  abstract find(query: FindPostsProps): Promise<{
+    count: number;
+    posts: Post[];
+  }>;
 }

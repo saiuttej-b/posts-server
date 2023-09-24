@@ -6,11 +6,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { PostCreateDto } from '../dtos/posts.dto';
+import { GetPostsDto, PostCreateDto } from '../dtos/posts.dto';
 import { PostsService } from '../services/posts.service';
 
 @Controller('posts')
@@ -45,8 +46,8 @@ export class PostsController {
   }
 
   @Get()
-  getPosts() {
-    return this.service.getPosts();
+  getPosts(@Query() query: GetPostsDto) {
+    return this.service.getPosts(query);
   }
 
   @Get(':id')

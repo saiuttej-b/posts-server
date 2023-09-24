@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { generateTimestampId } from 'src/utils/util-functions';
-import { PostRepository } from '../repositories/post.repository';
+import { FindPostsProps, PostRepository } from '../repositories/post.repository';
 import { Post, PostContent, PostDocument } from '../schemas/post.schema';
 
 @Injectable()
@@ -58,9 +58,31 @@ export class MongoDBPostRepository implements PostRepository {
     return this.convert(record);
   }
 
-  async find(): Promise<Post[]> {
-    const records = await this.postModel.find().sort({ id: -1 }).exec();
-    return this.convert(records);
+  async find(query: FindPostsProps): Promise<{
+    count: number;
+    posts: Post[];
+  }> {
+    const filter: FilterQuery<Post> = {
+      ...(query.search && {
+        $or: [
+          { title: { $regex: query.search, $options: 'i' } },
+          { shortDescription: { $regex: query.search, $options: 'i' } },
+        ],
+      }),
+    };
+
+    query.limit = query.limit || Number.MAX_SAFE_INTEGER;
+    query.skip = query.skip || 0;
+
+    const [count, records] = await Promise.all([
+      this.postModel.countDocuments(filter).exec(),
+      this.postModel.find(filter).sort({ id: -1 }).skip(query.skip).limit(query.limit).exec(),
+    ]);
+
+    return {
+      count,
+      posts: this.convert(records),
+    };
   }
 
   private convert(value: PostDocument): Post;

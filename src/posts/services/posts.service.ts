@@ -3,7 +3,7 @@ import { keyBy } from 'lodash';
 import { PostRepository } from 'src/domain/repositories/post.repository';
 import { PostContentTypes } from 'src/domain/schemas/post.schema';
 import { MediaResourcesService } from 'src/media-resources/services/media-resources.service';
-import { PostCreateDto } from '../dtos/posts.dto';
+import { GetPostsDto, PostCreateDto } from '../dtos/posts.dto';
 
 @Injectable()
 export class PostsService {
@@ -110,11 +110,12 @@ export class PostsService {
     };
   }
 
-  async getPosts() {
-    const posts = await this.postRepo.find();
+  async getPosts(query: GetPostsDto) {
+    const result = await this.postRepo.find(query);
 
     return {
-      posts: posts,
+      count: result.count,
+      posts: result.posts,
     };
   }
 }
